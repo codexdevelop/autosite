@@ -157,25 +157,53 @@ async def re_enable_chat(bot, message):
 
 @Client.on_message(filters.command('stats') & filters.incoming)
 async def get_ststs(bot, message):
-    if message.from_user.id not in ADMINS:  # You need to define ADMINS
-        m=await message.reply_sticker("CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ") 
+    if message.from_user.id not in ADMINS:
+        m = await message.reply_sticker("CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ") 
         await asyncio.sleep(2)
         await m.delete()
-        sticker_file_id = "CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ"  # Replace with your sticker file ID
+        sticker_file_id = "CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ"
         d = await message.reply_sticker(sticker=sticker_file_id)
         await asyncio.sleep(15)
         await d.delete()
     else:
         rju = await message.reply('Fetching stats..')
-        total_users = await db.total_users_count()
-        totl_chats = await db.total_chat_count()
-        files = await Media.count_documents()
-        size = await db.get_db_size()
-        free = 536870912 - size
-        size = get_size(size)
-        free = get_size(free)
-        await rju.edit(script.STATUS_TXT.format(files, total_users, totl_chats, size, free))
+        
+        # Debugging and error handling
+        try:
+            total_users = await db.total_users_count()
+        except Exception as e:
+            total_users = "Error"
+            print(f"Error in total_users_count: {e}")
 
+        try:
+            totl_chats = await db.total_chat_count()
+        except Exception as e:
+            totl_chats = "Error"
+            print(f"Error in total_chat_count: {e}")
+
+        try:
+            files = await Media.count_documents()
+        except Exception as e:
+            files = "Error"
+            print(f"Error in Media.count_documents: {e}")
+
+        try:
+            size = await db.get_db_size()
+            free = 536870912 - size
+            size = get_size(size)
+            free = get_size(free)
+        except Exception as e:
+            size = "Error"
+            free = "Error"
+            print(f"Error in get_db_size: {e}")
+
+        # Debugging output
+        print(f"Total Users: {total_users}, Total Chats: {totl_chats}, Files: {files}, Size: {size}, Free: {free}")
+
+        try:
+            await rju.edit(script.STATUS_TXT.format(files, total_users, totl_chats, size, free))
+        except Exception as e:
+            print(f"Error in editing message: {e}")
 
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
 async def gen_invite(bot, message):
