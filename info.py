@@ -18,8 +18,8 @@ def is_enabled(value, default):
 # Bot Information Configuration
 # ============================
 SESSION = environ.get('SESSION', 'Media_search')
-API_ID = int(environ.get('API_ID', ''))
-API_HASH = environ.get('API_HASH', '')
+API_ID = int(environ.get('API_ID', '25847347'))
+API_HASH = environ.get('API_HASH', '11569826ebbc9f8b14c3ab1c5ddb937b')
 BOT_TOKEN = environ.get('BOT_TOKEN', "")
 
 # ============================
@@ -38,9 +38,9 @@ FSUB_PICS = (environ.get('FSUB_PICS', 'https://envs.sh/Wdj.jpg')).split()  # Fsu
 # ============================
 # Admin, Channels & Users Configuration
 # ============================
-ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '6497757690').split()] # Replace with the actual admin ID(s) to add
-CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1001619818259').split()]  # Channel id for auto indexing (make sure bot is admin)
-LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1001868871195'))  # Log channel id (make sure bot is admin)
+ADMINS = [int(admin) if id_pattern.search(admin) else admin for admin in environ.get('ADMINS', '5860228893').split()] # Replace with the actual admin ID(s) to add
+CHANNELS = [int(ch) if id_pattern.search(ch) else ch for ch in environ.get('CHANNELS', '-1002434169448').split()]  # Channel id for auto indexing (make sure bot is admin)
+LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1002261121145'))  # Log channel id (make sure bot is admin)
 BIN_CHANNEL = int(environ.get('BIN_CHANNEL', '-1001868871195'))  # Bin channel id (make sure bot is admin)
 MOVIE_UPDATE_CHANNEL = int(environ.get('MOVIE_UPDATE_CHANNEL', '-1001868871195'))  # Notification of those who verify will be sent to your channel
 PREMIUM_LOGS = int(environ.get('PREMIUM_LOGS', '-1001868871195'))  # Premium logs channel id
@@ -84,7 +84,7 @@ CAPTION_LANGUAGES = ["Bhojpuri", "Hindi", "Bengali", "Tamil", "English", "Bangla
 # ============================
 VERIFY = bool(environ.get('VERIFY', True))  # Verification On (True) / Off (False)
 VERIFY_EXPIRE = int(environ.get('VERIFY_EXPIRE', 24))  # Add time in hours
-VERIFIED_LOG = int(environ.get('VERIFIED_LOG', '-1001868871195'))  # Log channel id (make sure bot is admin)
+VERIFIED_LOG = int(environ.get('VERIFIED_LOG', '-1002492785499'))  # Log channel id (make sure bot is admin)
 HOW_TO_VERIFY = environ.get('HOW_TO_VERIFY', 'https://t.me/How_to_Download_7x/30')  # How to open tutorial link for verification
 
 # ============================
