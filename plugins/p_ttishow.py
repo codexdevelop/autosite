@@ -154,6 +154,12 @@ async def re_enable_chat(bot, message):
     temp.BANNED_CHATS.remove(int(chat_))
     await message.reply("Chat Successfully re-enabled")
 
+import psutil  # System resources check karne ke liye
+import time
+
+# Function to get uptime
+def get_uptime():
+    return time.strftime("%H:%M:%S", time.gmtime(time.time() - START_TIME))  # START_TIME ko define karein
 
 @Client.on_message(filters.command('stats') & filters.incoming)
 async def get_ststs(bot, message):
@@ -167,8 +173,8 @@ async def get_ststs(bot, message):
         await d.delete()
     else:
         rju = await message.reply('Fetching stats..')
-        
-        # Debugging and error handling
+
+        # Database Queries with Error Handling
         try:
             total_users = await db.total_users_count()
         except Exception as e:
@@ -180,6 +186,12 @@ async def get_ststs(bot, message):
         except Exception as e:
             totl_chats = "Error"
             print(f"Error in total_chat_count: {e}")
+
+        try:
+            premium_users = await db.premium_users_count() if hasattr(db, 'premium_users_count') else "N/A"
+        except Exception as e:
+            premium_users = "Error"
+            print(f"Error in premium_users_count: {e}")
 
         try:
             files = await Media.count_documents()
@@ -197,13 +209,31 @@ async def get_ststs(bot, message):
             free = "Error"
             print(f"Error in get_db_size: {e}")
 
-        # Debugging output
-        print(f"Total Users: {total_users}, Total Chats: {totl_chats}, Files: {files}, Size: {size}, Free: {free}")
+        # System Resource Usage
+        bot_uptime = get_uptime()
+        ram_usage = psutil.virtual_memory().percent
+        cpu_usage = psutil.cpu_percent(interval=1)
 
+        # Fix Format Issue - Pass 13 Arguments
         try:
-            await rju.edit(script.STATUS_TXT.format(files, total_users, totl_chats, size, free))
+            await rju.edit(script.STATUS_TXT.format(
+                total_users,  # All users
+                totl_chats,   # All groups
+                premium_users, # Premium users
+                files,        # All files
+                size,         # Used storage
+                free,         # Free storage
+                files,        # All files (Database 2)
+                size,         # Size (Database 2)
+                free,         # Free (Database 2)
+                bot_uptime,   # Bot uptime
+                ram_usage,    # RAM usage
+                cpu_usage,    # CPU usage
+                files         # Both DBs files
+            ))
         except Exception as e:
             print(f"Error in editing message: {e}")
+
 
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
 async def gen_invite(bot, message):
