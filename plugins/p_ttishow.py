@@ -154,13 +154,6 @@ async def re_enable_chat(bot, message):
     temp.BANNED_CHATS.remove(int(chat_))
     await message.reply("Chat Successfully re-enabled")
 
-import psutil  # System resources check karne ke liye
-import time
-
-# Function to get uptime
-def get_uptime():
-    return time.strftime("%H:%M:%S", time.gmtime(time.time() - START_TIME))  # START_TIME ko define karein
-
 @Client.on_message(filters.command('stats') & filters.incoming)
 async def get_stats(bot, message):
     if message.from_user.id not in ADMINS:
@@ -191,23 +184,20 @@ async def get_stats(bot, message):
             print(f"✅ Step 5: Database size fetched: {size}, Free Space: {free}")
 
             # System Stats
-            bot_uptime = get_bot_uptime()
-            print(f"✅ Step 6: Bot Uptime: {bot_uptime}")
-
             ram_usage = get_ram_usage()
             cpu_usage = get_cpu_usage()
-            print(f"✅ Step 7: RAM: {ram_usage}%, CPU: {cpu_usage}%")
+            print(f"✅ Step 6: RAM: {ram_usage}%, CPU: {cpu_usage}%")
 
             # Message edit karein sahi data ke saath
             await rju.edit(script.STATUS_TXT.format(
                 total_users, total_chats, files, size, free,
-                bot_uptime, ram_usage, cpu_usage
+                ram_usage, cpu_usage
             ))
-            print("✅ Step 8: Stats message edited successfully!")
+            print("✅ Step 7: Stats message edited successfully!")
 
         except Exception as e:
             print(f"❌ ERROR: {e}")
-            await rju.edit(f"❌ Error fetching stats: {e}")      
+            await rju.edit(f"❌ Error fetching stats: {e}")
             
       
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
