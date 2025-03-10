@@ -162,78 +162,49 @@ def get_uptime():
     return time.strftime("%H:%M:%S", time.gmtime(time.time() - START_TIME))  # START_TIME ko define karein
 
 @Client.on_message(filters.command('stats') & filters.incoming)
-async def get_ststs(bot, message):
+async def get_stats(bot, message):
     if message.from_user.id not in ADMINS:
-        m = await message.reply_sticker("CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ") 
+        m = await message.reply_sticker("CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ")
         await asyncio.sleep(2)
         await m.delete()
-        sticker_file_id = "CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ"
-        d = await message.reply_sticker(sticker=sticker_file_id)
+        d = await message.reply_sticker(sticker="CAACAgUAAxkBAAJFeWd037UWP-vgb_dWo55DCPZS9zJzAAJpEgACqXaJVxBrhzahNnwSHgQ")
         await asyncio.sleep(15)
         await d.delete()
     else:
-        rju = await message.reply('Fetching stats..')
+        rju = await message.reply('Fetching stats...')
+        
+        # Database se values fetch kar rahe hain
+        total_users = await db.total_users_count()
+        total_chats = await db.total_chat_count()
+        premium_users = await db.premium_users_count()  # Premium Users count
+        files = await Media.count_documents()
+        size = await db.get_db_size()
+        free = 536870912 - size
+        size = get_size(size)
+        free = get_size(free)
 
-        # Database Queries with Error Handling
-        try:
-            total_users = await db.total_users_count()
-        except Exception as e:
-            total_users = "Error"
-            print(f"Error in total_users_count: {e}")
+        # Database 2 ka stats
+        db2_files = await db2.total_files_count()
+        db2_size = await db2.get_db_size()
+        db2_free = 536870912 - db2_size
+        db2_size = get_size(db2_size)
+        db2_free = get_size(db2_free)
 
-        try:
-            totl_chats = await db.total_chat_count()
-        except Exception as e:
-            totl_chats = "Error"
-            print(f"Error in total_chat_count: {e}")
+        # System Stats
+        bot_uptime = get_bot_uptime()
+        ram_usage = get_ram_usage()
+        cpu_usage = get_cpu_usage()
 
-        try:
-            premium_users = await db.premium_users_count() if hasattr(db, 'premium_users_count') else "N/A"
-        except Exception as e:
-            premium_users = "Error"
-            print(f"Error in premium_users_count: {e}")
+        # Dono databases ki total files
+        total_files_both_dbs = files + db2_files  
 
-        try:
-            files = await Media.count_documents()
-        except Exception as e:
-            files = "Error"
-            print(f"Error in Media.count_documents: {e}")
-
-        try:
-            size = await db.get_db_size()
-            free = 536870912 - size
-            size = get_size(size)
-            free = get_size(free)
-        except Exception as e:
-            size = "Error"
-            free = "Error"
-            print(f"Error in get_db_size: {e}")
-
-        # System Resource Usage
-        bot_uptime = get_uptime()
-        ram_usage = psutil.virtual_memory().percent
-        cpu_usage = psutil.cpu_percent(interval=1)
-
-        # Fix Format Issue - Pass 13 Arguments
-        try:
-            await rju.edit(script.STATUS_TXT.format(
-                total_users,  # All users
-                totl_chats,   # All groups
-                premium_users, # Premium users
-                files,        # All files
-                size,         # Used storage
-                free,         # Free storage
-                files,        # All files (Database 2)
-                size,         # Size (Database 2)
-                free,         # Free (Database 2)
-                bot_uptime,   # Bot uptime
-                ram_usage,    # RAM usage
-                cpu_usage,    # CPU usage
-                files         # Both DBs files
-            ))
-        except Exception as e:
-            print(f"Error in editing message: {e}")
-
+        # Message edit karein sahi data ke saath
+        await rju.edit(script.STATUS_TXT.format(
+            total_users, total_chats, premium_users, files, size, free,
+            db2_files, db2_size, db2_free,
+            bot_uptime, ram_usage, cpu_usage,
+            total_files_both_dbs
+        ))
 
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
 async def gen_invite(bot, message):
