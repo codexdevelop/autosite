@@ -172,39 +172,60 @@ async def get_stats(bot, message):
         await d.delete()
     else:
         rju = await message.reply('Fetching stats...')
-        
+        print("✅ Step 1: Bot received /stats command")
+
         # Database se values fetch kar rahe hain
-        total_users = await db.total_users_count()
-        total_chats = await db.total_chat_count()
-        premium_users = await db.premium_users_count()  # Premium Users count
-        files = await Media.count_documents()
-        size = await db.get_db_size()
-        free = 536870912 - size
-        size = get_size(size)
-        free = get_size(free)
+        try:
+            total_users = await db.total_users_count()
+            print(f"✅ Step 2: Total Users Fetched: {total_users}")
 
-        # Database 2 ka stats
-        db2_files = await db2.total_files_count()
-        db2_size = await db2.get_db_size()
-        db2_free = 536870912 - db2_size
-        db2_size = get_size(db2_size)
-        db2_free = get_size(db2_free)
+            total_chats = await db.total_chat_count()
+            print(f"✅ Step 3: Total Chats Fetched: {total_chats}")
 
-        # System Stats
-        bot_uptime = get_bot_uptime()
-        ram_usage = get_ram_usage()
-        cpu_usage = get_cpu_usage()
+            premium_users = await db.premium_users_count()
+            print(f"✅ Step 4: Premium Users Fetched: {premium_users}")
 
-        # Dono databases ki total files
-        total_files_both_dbs = files + db2_files  
+            files = await Media.count_documents()
+            print(f"✅ Step 5: Total Files Fetched: {files}")
 
-        # Message edit karein sahi data ke saath
-        await rju.edit(script.STATUS_TXT.format(
-            total_users, total_chats, premium_users, files, size, free,
-            db2_files, db2_size, db2_free,
-            bot_uptime, ram_usage, cpu_usage,
-            total_files_both_dbs
-        ))
+            size = await db.get_db_size()
+            free = 536870912 - size
+            size = get_size(size)
+            free = get_size(free)
+            print(f"✅ Step 6: Database size fetched: {size}, Free Space: {free}")
+
+            # Database 2 ka stats
+            db2_files = await db2.total_files_count()
+            db2_size = await db2.get_db_size()
+            db2_free = 536870912 - db2_size
+            db2_size = get_size(db2_size)
+            db2_free = get_size(db2_free)
+            print(f"✅ Step 7: DB2 Files: {db2_files}, Size: {db2_size}, Free: {db2_free}")
+
+            # System Stats
+            bot_uptime = get_bot_uptime()
+            print(f"✅ Step 8: Bot Uptime: {bot_uptime}")
+
+            ram_usage = get_ram_usage()
+            cpu_usage = get_cpu_usage()
+            print(f"✅ Step 9: RAM: {ram_usage}%, CPU: {cpu_usage}%")
+
+            # Dono databases ki total files
+            total_files_both_dbs = files + db2_files
+            print(f"✅ Step 10: Total Files (Both DBs): {total_files_both_dbs}")
+
+            # Message edit karein sahi data ke saath
+            await rju.edit(script.STATUS_TXT.format(
+                total_users, total_chats, premium_users, files, size, free,
+                db2_files, db2_size, db2_free,
+                bot_uptime, ram_usage, cpu_usage,
+                total_files_both_dbs
+            ))
+            print("✅ Step 11: Stats message edited successfully!")
+
+        except Exception as e:
+            print(f"❌ ERROR: {e}")
+            await rju.edit(f"❌ Error fetching stats: {e}")
 
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
 async def gen_invite(bot, message):
