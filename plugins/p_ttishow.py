@@ -183,22 +183,15 @@ async def get_stats(bot, message):
             free = get_size(free)
             print(f"✅ Step 5: Database size fetched: {size}, Free Space: {free}")
 
-            # System Stats
-            ram_usage = get_ram_usage()
-            cpu_usage = get_cpu_usage()
-            print(f"✅ Step 6: RAM: {ram_usage}%, CPU: {cpu_usage}%")
-
-            # Message edit karein sahi data ke saath
+            # Message edit karein sahi data ke saath (RAM & CPU Usage HATA DIYA)
             await rju.edit(script.STATUS_TXT.format(
-                total_users, total_chats, files, size, free,
-                ram_usage, cpu_usage
+                total_users, total_chats, files, size, free
             ))
-            print("✅ Step 7: Stats message edited successfully!")
+            print("✅ Step 6: Stats message edited successfully!")
 
         except Exception as e:
             print(f"❌ ERROR: {e}")
-            await rju.edit(f"❌ Error fetching stats: {e}")
-            
+            await rju.edit(f"❌ Error fetching stats: {e}")        
       
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
 async def gen_invite(bot, message):
