@@ -174,7 +174,6 @@ async def get_stats(bot, message):
         rju = await message.reply('Fetching stats...')
         print("✅ Step 1: Bot received /stats command")
 
-        # Database se values fetch kar rahe hain
         try:
             total_users = await db.total_users_count()
             print(f"✅ Step 2: Total Users Fetched: {total_users}")
@@ -191,38 +190,24 @@ async def get_stats(bot, message):
             free = get_size(free)
             print(f"✅ Step 5: Database size fetched: {size}, Free Space: {free}")
 
-            # Database 2 ka stats
-            db2_files = await db2.total_files_count()
-            db2_size = await db2.get_db_size()
-            db2_free = 536870912 - db2_size
-            db2_size = get_size(db2_size)
-            db2_free = get_size(db2_free)
-            print(f"✅ Step 6: DB2 Files: {db2_files}, Size: {db2_size}, Free: {db2_free}")
-
             # System Stats
             bot_uptime = get_bot_uptime()
-            print(f"✅ Step 7: Bot Uptime: {bot_uptime}")
+            print(f"✅ Step 6: Bot Uptime: {bot_uptime}")
 
             ram_usage = get_ram_usage()
             cpu_usage = get_cpu_usage()
-            print(f"✅ Step 8: RAM: {ram_usage}%, CPU: {cpu_usage}%")
-
-            # Dono databases ki total files
-            total_files_both_dbs = files + db2_files
-            print(f"✅ Step 9: Total Files (Both DBs): {total_files_both_dbs}")
+            print(f"✅ Step 7: RAM: {ram_usage}%, CPU: {cpu_usage}%")
 
             # Message edit karein sahi data ke saath
             await rju.edit(script.STATUS_TXT.format(
                 total_users, total_chats, files, size, free,
-                db2_files, db2_size, db2_free,
-                bot_uptime, ram_usage, cpu_usage,
-                total_files_both_dbs
+                bot_uptime, ram_usage, cpu_usage
             ))
-            print("✅ Step 10: Stats message edited successfully!")
+            print("✅ Step 8: Stats message edited successfully!")
 
         except Exception as e:
             print(f"❌ ERROR: {e}")
-            await rju.edit(f"❌ Error fetching stats: {e}")
+            await rju.edit(f"❌ Error fetching stats: {e}")      
             
       
 @Client.on_message(filters.command('invite') & filters.user(ADMINS))
