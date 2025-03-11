@@ -11,6 +11,7 @@ import asyncio
 from datetime import date, datetime
 import pytz
 from aiohttp import web
+from plugins import index
 
 from database.ia_filterdb import Media, Media2, choose_mediaDB, tempDict, db as clientDB
 from database.users_chats_db import db
