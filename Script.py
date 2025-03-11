@@ -30,30 +30,16 @@ class script(object):
 ɪғ ʏᴏᴜ ғᴏᴜɴᴅ ᴀɴʏ ʙᴜɢ ɪɴ ˹ʟᴜᴄʏ˼ ᴏʀ ɪғ ʏᴏᴜ ᴡᴀɴɴᴀ ɢɪᴠᴇ ғᴇᴇᴅʙᴀᴄᴋ ᴀʙᴏᴜᴛ ᴛʜᴇ ʙᴏᴛ˼, ᴩʟᴇᴀsᴇ ʀᴇᴩᴏʀᴛ ɪᴛ ᴀᴛ <a href='https://t.me/+DnmZbLjS0iw0YWI1'>sᴜᴩᴩᴏʀᴛ ᴄʜᴀᴛ</a>.</b>"""
 
     
-    STATUS_TXT = """<b>────「 ᴅᴀᴛᴀʙᴀsᴇ 1 」────</b>
+STATUS_TXT = """<b>────「 ᴅᴀᴛᴀʙᴀsᴇ 」────</b>
 │
 ├• ᴀʟʟ ᴜsᴇʀs ⋟ <code>{}</code>
 ├• ᴀʟʟ ɢʀᴏᴜᴘs ⋟ <code>{}</code>
-├• Pʀᴇᴍɪᴜᴍ Usᴇʀs ⋟ <code>{}</code>
 ├• ᴀʟʟ ꜰɪʟᴇs ⋟ <code>{}</code>
 ├• ᴜsᴇᴅ sᴛᴏʀᴀɢᴇ ⋟ <code>{}</code>
 ├• ꜰʀᴇᴇ sᴛᴏʀᴀɢᴇ ⋟ <code>{}</code>
 │
-<b>────「 ᴅᴀᴛᴀʙᴀsᴇ 2 」────</b>   
-│
-├• ᴀʟʟ ꜰɪʟᴇs ➤ <code>{}</code>
-├• size ➤ <code>{}</code>
-├• free ➤ <code>{}</code>
-│
-<b>────「 ʙᴏᴛ ᴅᴇᴛᴀɪʟs 」────</b>   
-│
-├• Bᴏᴛ Uᴘᴛɪᴍᴇ ➤ {}
-├• ʀᴀᴍ ➤ <code>{}%</code>
-├• ᴄᴘᴜ ➤ <code>{}%</code>   
-│
-├• Bᴏᴛʜ DBs Fɪʟᴇs: <code>{}</code>
-│
 <b>╰─────────────────────⍟</b>"""
+
 
     LOG_TEXT_G = """#NewGroup
     
